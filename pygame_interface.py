@@ -62,7 +62,7 @@ def run_pygame_gui(size, q, bot_called):
         if bot_called == 3:
             bot_location, button_pressed, path = move_bot_bfs3(matrix, bot_location, button_location, fire_cells)   
         if bot_called == 4:
-            bot_location, button_pressed = move_bot_dijkstra_multiple(matrix, bot_location, button_location, fire_cells)
+            bot_location, button_pressed, path = move_bot_dijkstra_multiple(matrix, bot_location, button_location, fire_cells)
         
         if path and bot_called == 1:
             bot_location = path[current_step]
