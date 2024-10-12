@@ -1,7 +1,7 @@
 import pygame
 import random
-from environment import create_environment
-from bot1 import bfs_bot1  # Assuming bfs_bot is defined in another file
+from environment import create_ship_layout
+from bot1 import bfs_bot1_traversal  # Assuming bfs_bot is defined in another file
 from fire import spread_fire  # Assuming fire simulation is in another file
 from constants import CELL_SIZE, GRID_MARGIN, BLACK, WHITE, RED, BLUE, GREEN
 from bot2 import move_bot_bfs2
@@ -10,13 +10,16 @@ from bot4 import move_bot_dijkstra_multiple
 from bonus import move_bot_bonus
 
 def display_alert(screen, message, width, height):
-    """Displays an alert message in the middle of the screen."""
-    font = pygame.font.Font(None, 30)
-    text = font.render(message, True, BLACK)
+    font = pygame.font.Font(None, 32)
+    text = font.render(message, True, (255, 255, 255)) 
     text_rect = text.get_rect(center=(width // 2, height // 2))
+    box_width, box_height = text_rect.width + 20, text_rect.height + 20
+    box_rect = pygame.Rect(0, 0, box_width, box_height)
+    box_rect.center = (width // 2, height // 2)
+    pygame.draw.rect(screen, (50, 50, 50), box_rect)
     screen.blit(text, text_rect)
     pygame.display.flip()
-    pygame.time.wait(2000)
+    pygame.time.delay(1000)
 
 def run_pygame_gui(size, q, bot_called):
     """Sets up and runs the Pygame interface."""
@@ -29,7 +32,7 @@ def run_pygame_gui(size, q, bot_called):
     pygame.display.set_caption("Bot vs Fire Simulation")
   
     # Create environment, i.e., bot, button, and fire locations
-    matrix, bot_location, button_location, fire_cells = create_environment(size, q)
+    matrix, bot_initial_position, button_position, fire_cells = create_ship_layout(size, q)
     clock = pygame.time.Clock()
     running = True
     button_pressed = False
@@ -38,7 +41,7 @@ def run_pygame_gui(size, q, bot_called):
     path = []
 
     if(bot_called == 1):
-        path = bfs_bot1(matrix, bot_location, button_location, fire_cells)
+        path = bfs_bot1_traversal(matrix, bot_initial_position, button_position, fire_cells)
 
         if path:
             print(f"Shortest path from Bot to Button is: {path}")
@@ -47,7 +50,7 @@ def run_pygame_gui(size, q, bot_called):
             return  # Exit if no path exists
     # if(bot_called)
     # Track bot's movement step-by-step
-    current_step = 0
+    current_position_step = 0
 
     while running and not button_pressed:
         for event in pygame.event.get():
@@ -59,24 +62,24 @@ def run_pygame_gui(size, q, bot_called):
 
         # Move the bot along the path
         if bot_called == 2:
-            bot_location, button_pressed, path = move_bot_bfs2(matrix, bot_location, button_location, fire_cells)
+            bot_initial_position, button_pressed, path = move_bot_bfs2(matrix, bot_initial_position, button_position, fire_cells)
         if bot_called == 3:
-            bot_location, button_pressed, path = move_bot_bfs3(matrix, bot_location, button_location, fire_cells)   
+            bot_initial_position, button_pressed, path = move_bot_bfs3(matrix, bot_initial_position, button_position, fire_cells)   
         if bot_called == 4:
-            bot_location, button_pressed, path = move_bot_dijkstra_multiple(matrix, bot_location, button_location, fire_cells)
+            bot_initial_position, button_pressed, path = move_bot_dijkstra_multiple(matrix, bot_initial_position, button_position, fire_cells)
         if bot_called == 5:
-            bot_location, button_pressed, path = move_bot_bonus(matrix, bot_location, button_location, fire_cells)
-            # bot_location = path[current_step]
-            # current_step = min(current_step + 1, len(path) - 1)
-            matrix[bot_location[0]][bot_location[1]] = 1
+            bot_initial_position, button_pressed, path = move_bot_bonus(matrix, bot_initial_position, button_position, fire_cells)
+            # bot_initial_position = path[current_position_step]
+            # current_position_step = min(current_position_step + 1, len(path) - 1)
+            matrix[bot_initial_position[0]][bot_initial_position[1]] = 1
         if path and (bot_called == 1):
-            bot_location = path[current_step]
-            current_step = min(current_step + 1, len(path) - 1)
+            bot_initial_position = path[current_position_step]
+            current_position_step = min(current_position_step + 1, len(path) - 1)
             
                 
 
         # Check if bot has stepped into fire
-        if bot_location in fire_cells:
+        if bot_initial_position in fire_cells:
             display_alert(screen, "The Bot is on fire! Game Over!", width, height)
             running = False
             break
@@ -87,8 +90,8 @@ def run_pygame_gui(size, q, bot_called):
             break
 
         # Check if the button is pressed and not on fire
-        if bot_location == button_location:
-            if button_location in fire_cells:
+        if bot_initial_position == button_position:
+            if button_position in fire_cells:
                 display_alert(screen, "The Button is on fire! Game Over!", width, height)
                 running = False
                 break
@@ -101,9 +104,9 @@ def run_pygame_gui(size, q, bot_called):
         for r in range(size):
             for c in range(size):
                 color = BLACK if matrix[r][c] == 1 else WHITE
-                if (r, c) == bot_location:
+                if (r, c) == bot_initial_position:
                     color = BLUE
-                elif (r, c) == button_location:
+                elif (r, c) == button_position:
                     color = GREEN
                 elif (r, c) in fire_cells:
                     color = RED
