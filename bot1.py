@@ -24,7 +24,7 @@ def bfs_bot1(matrix, bot_location, button_location, fire_cells): #uses BFS to co
                 queue.append(neighbor)
                 visited.add(neighbor)
                 parent[neighbor] = current
-
-        
-
+    
+    
+    
     return []

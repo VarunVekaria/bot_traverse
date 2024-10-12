@@ -7,6 +7,7 @@ from constants import CELL_SIZE, GRID_MARGIN, BLACK, WHITE, RED, BLUE, GREEN
 from bot2 import move_bot_bfs2
 from bot3 import move_bot_bfs3
 from bot4 import move_bot_dijkstra_multiple
+from bonus import move_bot_bonus
 
 def display_alert(screen, message, width, height):
     """Displays an alert message in the middle of the screen."""
@@ -44,7 +45,7 @@ def run_pygame_gui(size, q, bot_called):
         else:
             print("No valid path! Bot trapped!")
             return  # Exit if no path exists
-
+    # if(bot_called)
     # Track bot's movement step-by-step
     current_step = 0
 
@@ -63,10 +64,16 @@ def run_pygame_gui(size, q, bot_called):
             bot_location, button_pressed, path = move_bot_bfs3(matrix, bot_location, button_location, fire_cells)   
         if bot_called == 4:
             bot_location, button_pressed, path = move_bot_dijkstra_multiple(matrix, bot_location, button_location, fire_cells)
-        
-        if path and bot_called == 1:
+        if bot_called == 5:
+            bot_location, button_pressed, path = move_bot_bonus(matrix, bot_location, button_location, fire_cells)
+            # bot_location = path[current_step]
+            # current_step = min(current_step + 1, len(path) - 1)
+            matrix[bot_location[0]][bot_location[1]] = 1
+        if path and (bot_called == 1):
             bot_location = path[current_step]
             current_step = min(current_step + 1, len(path) - 1)
+            
+                
 
         # Check if bot has stepped into fire
         if bot_location in fire_cells:
