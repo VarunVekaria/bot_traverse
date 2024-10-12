@@ -1,4 +1,4 @@
-def get_neighbors(matrix, row, col): #for a given cell it is able to get its neighbors
+def get_neighbor_cells(matrix, row, col): #for a given cell it is able to get its neighbors
     dir = [(-1, 0), (1, 0), (0, -1), (0, 1)]
     neighbors = []
     for dr, dc in dir:

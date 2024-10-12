@@ -1,30 +1,30 @@
 from collections import deque
-from neighbors import get_neighbors
+from neighbors import get_neighbor_cells
 
-def bfs_bot1(matrix, bot_location, button_location, fire_cells): #uses BFS to compute the shortest path. The bot traverses only through that path.
-    queue = deque([bot_location])
-    visited = set([bot_location])
-    parent = {bot_location: None}
+#Shortest path computed using BFS. The bot traverses only through this path.
+def bfs_bot1_traversal(matrix, bot_initial_position, button_position, fire_cells): 
+    queue = deque([bot_initial_position])
+    visited_cells = set([bot_initial_position])
+    parent_cell = {bot_initial_position: None}
+    initial_fire_cell=fire_cells #Storing the initial cell that is on fire.
 
     while queue:
-        current = queue.popleft()
+        current_position = queue.popleft()
 
-        if current == button_location:
+        if current_position == button_position:
             path = []
-            while current is not None:
-                path.append(current)
-                current = parent[current]
+            while current_position is not None:
+                path.append(current_position)
+                current_position = parent_cell[current_position]
             path.reverse()
             print(path)
             return path
 
-        for neighbor in get_neighbors(matrix, current[0], current[1]):
-            if matrix[neighbor[0]][neighbor[1]] == 0 and neighbor not in visited and neighbor not in fire_cells:
-                print(fire_cells)
+        for neighbor in get_neighbor_cells(matrix, current_position[0], current_position[1]):
+            if matrix[neighbor[0]][neighbor[1]] == 0 and neighbor not in visited_cells and neighbor not in initial_fire_cell:
+                print(initial_fire_cell)
                 queue.append(neighbor)
-                visited.add(neighbor)
-                parent[neighbor] = current
-    
-    
+                visited_cells.add(neighbor)
+                parent_cell[neighbor] = current_position
     
     return []
