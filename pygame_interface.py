@@ -1,43 +1,45 @@
 import pygame
 import random
 from environment import create_ship_layout
-from bot1 import bfs_bot1_traversal  # Assuming bfs_bot is defined in another file
-from fire import spread_fire  # Assuming fire simulation is in another file
-from constants import CELL_SIZE, GRID_MARGIN, BLACK, WHITE, RED, BLUE, GREEN
+from bot1 import bfs_bot1_traversal  
+from fire import spread_fire  
+from constants import CELL_SIZE, GRID_MARGIN, BLACK, WHITE, SCARLET_RED, BLUE, GREEN
 from bot2 import move_bot_bfs2
 from bot3 import move_bot_bfs3
 from bot4 import move_bot_dijkstra_multiple
 from bonus import move_bot_bonus
 
+#This functions displays alert message, depict game status.
 def display_alert(screen, message, width, height):
-    font = pygame.font.Font(None, 32)
+    font = pygame.font.Font(None, 32) #Set font for the alert text
     text = font.render(message, True, (255, 255, 255)) 
     text_rect = text.get_rect(center=(width // 2, height // 2))
-    box_width, box_height = text_rect.width + 20, text_rect.height + 20
+    box_width, box_height = text_rect.width + 20, text_rect.height + 20 #Defining alert box dimensions.
     box_rect = pygame.Rect(0, 0, box_width, box_height)
-    box_rect.center = (width // 2, height // 2)
-    pygame.draw.rect(screen, (50, 50, 50), box_rect)
+    box_rect.center = (width // 2, height // 2) #Position the box at center
+    pygame.draw.rect(screen, (50, 50, 50), box_rect) #Draws the alert rectangle.
     screen.blit(text, text_rect)
     pygame.display.flip()
-    pygame.time.delay(1000)
+    pygame.time.delay(1000) #Pause the game for a second so that alert can be seen.
+
 
 def run_pygame_gui(size, q, bot_called):
     """Sets up and runs the Pygame interface."""
     pygame.init()
 
-    # Set up the display for the grid
+    # Set up the display for the main grid
     width = size * (CELL_SIZE + GRID_MARGIN)
     height = size * (CELL_SIZE + GRID_MARGIN)
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption("Bot vs Fire Simulation")
   
-    # Create environment, i.e., bot, button, and fire locations
+    # Create ship environment, i.e., bot, button, and fire locations
     matrix, bot_initial_position, button_position, fire_cells = create_ship_layout(size, q)
     clock = pygame.time.Clock()
     running = True
     button_pressed = False
 
-    # For tracking bot path
+    # For tracking the path bot takes
     path = []
 
     if(bot_called == 1):
@@ -47,8 +49,8 @@ def run_pygame_gui(size, q, bot_called):
             print(f"Shortest path from Bot to Button is: {path}")
         else:
             print("No valid path! Bot trapped!")
-            return  # Exit if no path exists
-    # if(bot_called)
+            return  
+        
     # Track bot's movement step-by-step
     current_position_step = 0
 
@@ -80,19 +82,19 @@ def run_pygame_gui(size, q, bot_called):
 
         # Check if bot has stepped into fire
         if bot_initial_position in fire_cells:
-            display_alert(screen, "The Bot is on fire! Game Over!", width, height)
+            display_alert(screen, "The Bot is on fire! Game Over!!!", width, height)
             running = False
             break
 
         # Check if the button is pressed and not on fire
         if bot_initial_position == button_position:
             if button_position in fire_cells:
-                display_alert(screen, "The Button is on fire! Game Over!", width, height)
+                display_alert(screen, "The Button is on fire! Game Over!!!", width, height)
                 running = False
                 break
             else:
                 button_pressed = True
-                display_alert(screen, "Game successful! Bot suppressed fire!", width, height)
+                display_alert(screen, "Game successful! Bot suppressed fire!!", width, height)
 
         # Draw the grid
         screen.fill(BLACK)
@@ -104,7 +106,7 @@ def run_pygame_gui(size, q, bot_called):
                 elif (r, c) == button_position:
                     color = GREEN
                 elif (r, c) in fire_cells:
-                    color = RED
+                    color = SCARLET_RED
 
                 pygame.draw.rect(
                     screen, 

@@ -1,7 +1,7 @@
 import random
 
 def generate_blocked_cells(size): 
-    """Creates a matrix filled with blocked cells (1)."""
+    """Creates a matrix filled with blocked cells (1)"""
     return [[1 for _ in range(size)] for _ in range(size)]
 
 
@@ -50,15 +50,15 @@ def identify_dead_ends(matrix):
 
 
 def open_closed_neighbors(matrix, dead_ends):
-    """Opens a random closed neighbor of dead end cells."""
-    for _ in range(len(dead_ends) // 2):  # Approximately half of the dead ends
+    """Opens a random closed adjacent_neighbour of dead end cells."""
+    for _ in range(len(dead_ends) // 2):  
         dead_end = random.choice(dead_ends)
         neighbors = get_neighbor_cells(matrix, dead_end[0], dead_end[1])
         closed_neighbors = [(r, c) for r, c in neighbors if matrix[r][c] == 1]
         
         if closed_neighbors:
             neighbor_to_open = random.choice(closed_neighbors)
-            matrix[neighbor_to_open[0]][neighbor_to_open[1]] = 0  # Open the selected closed neighbor
+            matrix[neighbor_to_open[0]][neighbor_to_open[1]] = 0  # Open the selected closed adjacent_neighbour
 
 
 def initialize_button_position(matrix, bot_initial_position): 
@@ -75,20 +75,19 @@ def initialize_bot_initial_position(matrix):
     return bot_initial_position
 
 
-def initialize_fire_location(matrix, bot_initial_position, button_position): 
+def initialize_fire_position(matrix, bot_initial_position, button_position): 
     """Starts the fire at a random cell on the grid."""
     open_cells = [(r, c) for r in range(len(matrix)) for c in range(len(matrix[0])) if matrix[r][c] == 0 and (r, c) != bot_initial_position and (r, c) != button_position]
     fire_location = random.choice(open_cells)
     return {fire_location}
 
-
 def create_ship_layout(size, q): 
-    """Creates the initial environment."""
+    """Creates the initial Ship layout."""
     matrix = generate_blocked_cells(size)
     open_cells(matrix)
     dead_ends = identify_dead_ends(matrix)
     open_closed_neighbors(matrix, dead_ends)
-    bot_initial_position = initialize_bot_initial_position(matrix)
-    button_position = initialize_button_position(matrix, bot_initial_position)
-    fire_cells = initialize_fire_location(matrix, bot_initial_position, button_position)
+    bot_initial_position = initialize_bot_initial_position(matrix) #Initialize bot position on the ship.
+    button_position = initialize_button_position(matrix, bot_initial_position) #Initialize button position on the ship.
+    fire_cells = initialize_fire_position(matrix, bot_initial_position, button_position) #Initialize fire position on the ship.
     return matrix, bot_initial_position, button_position, fire_cells

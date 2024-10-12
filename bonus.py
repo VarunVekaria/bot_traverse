@@ -1,7 +1,7 @@
 import pygame
 import random
 from collections import deque
-from constants import CELL_SIZE, GRID_MARGIN, BLACK, WHITE, RED, BLUE, GREEN
+from constants import CELL_SIZE, GRID_MARGIN, BLACK, WHITE, SCARLET_RED, BLUE, GREEN
 from neighbors import get_neighbor_cells
 
 # Breadth-First Search (BFS) to compute shortest path, avoiding fire and adjacent fire cells
@@ -11,29 +11,29 @@ def bfs_bot(matrix, bot_initial_position, button_position, fire_cells, avoid_adj
     parent_cell = {bot_initial_position: None}
    # truly_visited_cells = set([bot_initial_position])
     while queue:
-        current_position = queue.popleft()
+        curr_position = queue.popleft()
 
-        if current_position == button_position:
+        if curr_position == button_position:
             path = []
-            while current_position is not None:
-                path.append(current_position)
-                current_position = parent_cell[current_position]
+            while curr_position is not None:
+                path.append(curr_position)
+                curr_position = parent_cell[curr_position]
             path.reverse()
             return path
 
-        for neighbor in get_neighbor_cells(matrix, current_position[0], current_position[1]):
-            if matrix[neighbor[0]][neighbor[1]] == 0 and neighbor not in visited_cells:
+        for adjacent_neighbour in get_neighbor_cells(matrix, curr_position[0], curr_position[1]):
+            if matrix[adjacent_neighbour[0]][adjacent_neighbour[1]] == 0 and adjacent_neighbour not in visited_cells:
                 # Avoid fire cells and adjacent fire cells if possible
                 if avoid_adjacent_fire:
-                    fire_adjacent = any(n in fire_cells for n in get_neighbor_cells(matrix, neighbor[0], neighbor[1]))
-                    if neighbor in fire_cells or fire_adjacent:
+                    fire_adjacent = any(n in fire_cells for n in get_neighbor_cells(matrix, adjacent_neighbour[0], adjacent_neighbour[1]))
+                    if adjacent_neighbour in fire_cells or fire_adjacent:
                         continue
                 else:
-                    if neighbor in fire_cells:
+                    if adjacent_neighbour in fire_cells:
                         continue
-                queue.append(neighbor)
-                visited_cells.add(neighbor)
-                parent_cell[neighbor] = current_position
+                queue.append(adjacent_neighbour)
+                visited_cells.add(adjacent_neighbour)
+                parent_cell[adjacent_neighbour] = curr_position
 
     return []  # No path found
 
