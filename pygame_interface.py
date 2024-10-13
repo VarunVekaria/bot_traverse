@@ -86,7 +86,7 @@ def run_pygame_gui(size, q, bot_called):
             running = False
             break
 
-        if button_location in fire_cells:
+        if button_position in fire_cells:
             display_alert(screen, "The Button is on fire! Game Over!", width, height)
             running = False
             break
