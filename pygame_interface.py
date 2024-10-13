@@ -6,7 +6,7 @@ from fire import spread_fire
 from constants import CELL_SIZE, GRID_MARGIN, BLACK, WHITE, SCARLET_RED, BLUE, GREEN
 from bot2 import move_bot_bfs2
 from bot3 import move_bot_bfs3
-from bot4 import move_bot_dijkstra_multiple
+from bot4 import move_bot_dijkstra
 from bonus import move_bot_bonus
 
 #This functions displays alert message, depict game status.
@@ -68,7 +68,7 @@ def run_pygame_gui(size, q, bot_called):
         if bot_called == 3:
             bot_initial_position, button_pressed, path = move_bot_bfs3(matrix, bot_initial_position, button_position, fire_cells)   
         if bot_called == 4:
-            bot_initial_position, button_pressed, path = move_bot_dijkstra_multiple(matrix, bot_initial_position, button_position, fire_cells)
+            bot_initial_position, button_pressed, path = move_bot_dijkstra(matrix, bot_initial_position, button_position, fire_cells)
         if bot_called == 5:
             bot_initial_position, button_pressed, path = move_bot_bonus(matrix, bot_initial_position, button_position, fire_cells)
             # bot_initial_position = path[current_position_step]
@@ -101,7 +101,7 @@ def run_pygame_gui(size, q, bot_called):
                 button_pressed = True
                 display_alert(screen, "Game successful! Bot suppressed fire!!", width, height)
 
-        # Draw the grid
+        #Grid drawing
         screen.fill(BLACK)
         for r in range(size):
             for c in range(size):
@@ -120,8 +120,6 @@ def run_pygame_gui(size, q, bot_called):
                 )
 
         pygame.display.flip()
-
-        # Speed of simulation
-        clock.tick(4)
+        clock.tick(4) #setting speed of simulation
 
     pygame.quit()

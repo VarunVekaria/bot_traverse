@@ -1,11 +1,8 @@
-import pygame
-import random
 from collections import deque
-from constants import CELL_SIZE, GRID_MARGIN, BLACK, WHITE, SCARLET_RED, BLUE, GREEN
 from neighbors import get_neighbor_cells
 
 #Shortest path computed using Breadth-First Search (BFS).
-#The bot traverses only through this path. Avoiding all the fire cells and keeping the bot safe.
+#At each time-step it recalculates the route in order to avoid fire cells. 
 def bfs_bot(matrix, bot_initial_position, button_position, fire_cells):
     queue = deque([bot_initial_position])
     visited_cells = set([bot_initial_position]) #Storing visited cells
@@ -24,7 +21,7 @@ def bfs_bot(matrix, bot_initial_position, button_position, fire_cells):
         for adjacent_neighbour in get_neighbor_cells(matrix, curr_position[0], curr_position[1]):
             
             #Checking if neighbour cell is valid.
-            #Checking if its open, adjacent neighbour not in visited and adjacent neighbour not currently a fire cell.
+            #Checking if its open, not in visited and not currently a fire cell.
             if matrix[adjacent_neighbour[0]][adjacent_neighbour[1]] == 0 and adjacent_neighbour not in visited_cells and adjacent_neighbour not in fire_cells:
                 if adjacent_neighbour in fire_cells:
                     continue
@@ -38,10 +35,10 @@ def move_bot_bfs2(matrix, bot_initial_position, button_position, fire_cells):
     # Try to avoid the initial fire cell and current fire cells.
     path = bfs_bot(matrix, bot_initial_position, button_position, fire_cells)
     if not path:
-        print(f"No valid path at step, bot remains at {bot_initial_position}")
-        return bot_initial_position, False, []  # No valid path, bot stays in place
+        print(f"No valid path is found, bot remains at {bot_initial_position}")
+        return bot_initial_position, False, []  # No valid path was found so the bot stays in place
     
-    print(f"New path re-planned: {path}")  # Tries to look for a new path
+    # print(f"New path re-planned: {path}")  # Tries to look for a new path
     return path[1], path[1] == button_position, path  # Move to the next step in the path
 
 

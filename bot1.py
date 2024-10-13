@@ -24,10 +24,9 @@ def bfs_bot1_traversal(matrix, bot_initial_position, button_position, fire_cells
         
 
         for adjacent_neighbour in get_neighbor_cells(matrix, curr_position[0], curr_position[1]):
-            #Checking if neighbour cell is valid.
-            #Checking if its open, adjacent neighbour not in visited and adjacent neighbour not the initial fire block.
+            #Checking if neighbour cell is open
+            #Checking if neighbour is not in visited and neighbour is not the initial fire cell.
             if matrix[adjacent_neighbour[0]][adjacent_neighbour[1]] == 0 and adjacent_neighbour not in visited_cells and adjacent_neighbour not in initial_fire_cell:
-                print(initial_fire_cell)
                 queue.append(adjacent_neighbour)
                 visited_cells.add(adjacent_neighbour)
                 parent_cell[adjacent_neighbour] = curr_position

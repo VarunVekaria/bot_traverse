@@ -1,11 +1,8 @@
-import pygame
-import random
 from collections import deque
-from constants import CELL_SIZE, GRID_MARGIN, BLACK, WHITE, SCARLET_RED, BLUE, GREEN
 from neighbors import get_neighbor_cells
 
 #Shortest path computed using Breadth-First Search (BFS).
-#The bot traverses only through this path. Avoiding all the fire cells and cells adjacent to fire cells too, keeping the bot safe.
+#The bot tries to avoid all the fire cells and cells adjacent to fire cells too, keeping the bot safe.
 def bfs_bot(matrix, bot_initial_position, button_position, fire_cells, avoid_adjacent_fire=True):
     queue = deque([bot_initial_position])
     visited_cells = set([bot_initial_position])  #Storing visited cells
@@ -51,5 +48,5 @@ def move_bot_bfs3(matrix, bot_initial_position, button_position, fire_cells):
         print(f"No valid path at step, bot remains at {bot_initial_position}")
         return bot_initial_position, False, []  # No valid path, bot stays in place
     
-    print(f"New path re-planned: {path}")  ## Tries to look for a new path
-    return path[1], path[1] == button_position, path  # Move to the next step in the path
+    print(f"New path re-planned: {path}")  ## Prints the new path calculated
+    return path[1], path[1] == button_position, path  # Moves the bot to the next step in the path

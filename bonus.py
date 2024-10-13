@@ -1,7 +1,4 @@
-import pygame
-import random
 from collections import deque
-from constants import CELL_SIZE, GRID_MARGIN, BLACK, WHITE, SCARLET_RED, BLUE, GREEN
 from neighbors import get_neighbor_cells
 
 # Breadth-First Search (BFS) to compute shortest path, avoiding fire and adjacent fire cells
