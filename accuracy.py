@@ -4,6 +4,11 @@ from environment import create_ship_layout
 from fire import spread_fire
 from bonus import move_bot_bonus
 import numpy as np
+import os
+
+# Create a folder named "bot2" if it doesn't exist
+if not os.path.exists("bot5"):
+    os.makedirs("bot5")
 
 # Function to run the simulation and track success rate for multiple iterations
 def run_simulation(size, q, iterations, csv_file):
@@ -46,19 +51,19 @@ def plot_success_rate(success_rates, q):
     plt.ylabel('Cumulative Success Rate (%)')
     plt.title(f'Cumulative Success Rate for q={q:.1f} over Iterations')
     plt.grid(True)
-    plt.savefig(f'success_rate_bot3_1000_q_{q:.1f}.png')  # Save plot as image
+    plt.savefig(f'bot5/success_rate_bot5_1000_q_{q:.1f}.png')  # Save plot as image
     plt.close()  # Close the plot to avoid overlapping
 
 # Run simulations for multiple q values and track final accuracies
 size = 40  # Grid size
-num_iterations = 1  # Number of iterations per q
+num_iterations = 250  # Number of iterations per q
 q_values = np.arange(0.1, 1.1, 0.1)# Different fire spread probabilities
 
 final_accuracies = []
 
 for q in q_values:
     print(f"Running simulation for q={q}")
-    success_rates, final_accuracy = run_simulation(size, q, num_iterations, f'success_rates_bot3_1000_q_{q:.1f}.csv')
+    success_rates, final_accuracy = run_simulation(size, q, num_iterations, f'bot5/success_rates_bot5_1000_q_{q:.1f}.csv')
     final_accuracies.append(final_accuracy)
 
     # Plot success rate for this q value
@@ -70,5 +75,5 @@ plt.xlabel('Fire Spread Probability (q)')
 plt.ylabel('Final Accuracy (%)')
 plt.title('Final Accuracy vs Fire Spread Probability (q)')
 plt.grid(True)
-plt.savefig('final_accuracy_bot3_1000_vs_q.png')  # Save plot as image
+plt.savefig('bot5/final_accuracy_bot5_1000_vs_q.png')  # Save plot as image
 plt.show()
