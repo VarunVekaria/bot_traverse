@@ -3,7 +3,7 @@
 
    
 ```
-1. bfs.py --> to start the project 
+1. bfs.py --> to start the project, run this file
 You can specify the bot you want to traverse and also change the q value.  
  bot_called= 1 calls Bot 1, 
  bot_called= 2 calls Bot 2, 
@@ -14,11 +14,13 @@ You can specify the bot you want to traverse and also change the q value.
 2. environment.py --> Creates initial environment
 3. fire --> spread of fire logic 
 4. constant --> HEX codes for pygame and few other constants
-5. bot2.py --> Logic for bot 2
-5. bot3.py --> Logic for bot 3
-5. bot4.py --> Logic for bot 4
-5. bonus.py --> Logic for bonus bot
-```
+5. display --> to display alerts
+6. pygame_interface --> visualization logic 
+7. neighbors.py --> to get neighbors of a given cell of grid 
+8. bot2.py --> Logic for bot 2
+9. bot3.py --> Logic for bot 3
+10. bot4.py --> Logic for bot 4
+11. bonus.py --> Logic for bonus bot
 
 ## Technologies
 Python
