@@ -3,9 +3,21 @@
 
    
 ```
-1. 
-2. Sign up or log in to manage your tasks.
-3. Use the dashboard to create, edit, and delete tasks.
+1. bfs.py --> to start the project 
+You can specify the bot you want to traverse and also change the q value.  
+ bot_called= 1 calls Bot 1, 
+ bot_called= 2 calls Bot 2, 
+ bot_called= 3 calls Bot 3, 
+ bot_called= 4 calls Bot 4, 
+ bot_called= 5, is the bonus case where ship environment is also changing. 
+
+2. environment.py --> Creates initial environment
+3. fire --> spread of fire logic 
+4. constant --> HEX codes for pygame and few other constants
+5. bot2.py --> Logic for bot 2
+5. bot3.py --> Logic for bot 3
+5. bot4.py --> Logic for bot 4
+5. bonus.py --> Logic for bonus bot
 ```
 
 ## Technologies
